@@ -2,7 +2,7 @@
 import { Box } from "@chakra-ui/react";
 import GoogleMapReact from "google-map-react";
 
-export const Maps = ({coordinates, setCoordinates}) => {
+export const Maps = ({coordinates, setCoordinates, setBounds}) => {
 
   return (
     <Box width={"full"} height={"full"}>
@@ -13,9 +13,18 @@ export const Maps = ({coordinates, setCoordinates}) => {
       defaultZoom = {10}
       margin = {[50,50,50,50]}
       options={""}
-      onChange={()=>{}}
+      onChange={(e)=>{
+        setCoordinates( old => {
+          return {lat:e.center.lat, lng:e.center.lng}
+        })
+        setBounds(old => {
+          return {ne: e.marginBounds.ne, sw:e.marginBounds.sw}
+        })
+      }}
       onChildClick={()=>{}}
-      ></GoogleMapReact>
+      
+      
+       />
     </Box>
   );
 };
