@@ -13,10 +13,9 @@ const options ={
   },
   headers: {
     'x-rapidapi-host': 'travel-advisor.p.rapidapi.com',
-    'x-rapidapi-key': '889d084971mshcbf6c1a399b2097p1ed71ejsn3d5a9d16c2a8'
+    'x-rapidapi-key': '9215efe589msh1ef42f046bdfbe3p11f695jsnf286089d210b'
   }
 };
-
       try{
         const {data:{data}} = await axios.get(url,options)
         return data

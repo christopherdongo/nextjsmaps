@@ -1,16 +1,22 @@
-import { useState, useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
-import { PlaceDetail, List, Maps, Header, Layout } from "../components";
-import {getTravelData} from './api'
+/* eslint-disable @next/next/no-sync-scripts */
+import { useEffect } from "react";
+import { List, Maps, Header, Layout } from "../components";
+import UsehookMaps  from '../hooks/UsehookMaps'
 
 
 const Home = () => {
-  const [coordinates, setCoordinates] = useState({ ne: 0, sw: 0 });
-  const [bounds, setBounds] = useState(null);
-  const [type, setType] = useState("restaurants");
-  const [ratings, setRatings] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [places, setPlaces] = useState(null)
+
+  const {   
+    coordinates, setCoordinates,
+     setBounds,
+    type, setType,
+    ratings, setRatings,
+    isLoading,
+    places,
+    filteredPlaces,
+    addrating
+  } = UsehookMaps();
+
 
   useEffect(() => {
     //location ip
@@ -20,26 +26,8 @@ const Home = () => {
           return { lat: latitude, lng: longitude };
         })
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect( () => {
-    setIsLoading(true);
-    const addgetFunctionApi=async(ratings,type,sw, ne)=>{
-      const dat = await getTravelData(type,sw, ne);
-      console.log(dat)
-        if(dat.length>1){
-          setPlaces(old => {
-            return dat.filter(item => item.name !== undefined)
-          
-        })
-        }
-      setIsLoading(false);
-     }
-     if(bounds?.sw && bounds.ne){
-      addgetFunctionApi(ratings,type,bounds.sw, bounds.ne);
-     }
-
-  }, [type,coordinates, bounds,ratings]);
 
   return (
     <Layout>
@@ -48,11 +36,16 @@ const Home = () => {
         setType={setType}
         ratings={ratings}
         setRatings={setRatings}
+        addrating={addrating}
+        setCoordinates={setCoordinates}
       />
-      <List places={places} isLoading={isLoading} />
-      <Maps coordinates={coordinates} setCoordinates={setCoordinates} setBounds={setBounds}/>
-    </Layout>
+       <List places={filteredPlaces.length>0? filteredPlaces :  places} isLoading={isLoading} />
+       
+      <Maps coordinates={coordinates} setCoordinates={setCoordinates} setBounds={setBounds} places={filteredPlaces.length>0? filteredPlaces :  places}/>
+  
+      </Layout>
   );
 };
 
 export default Home;
+

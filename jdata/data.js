@@ -9,14 +9,20 @@ export const data = [
   },
   {
     name: "Restaurants",
-    icons: <BiRestaurant fontSize={25} />
+    icons: <BiRestaurant fontSize={25} />,
+    menu: "All Ratings",
+    submenus: [1, 2, 3, 4, 5]
   },
   {
     name: "Hotels",
-    icons: <BiHotel fontSize={25} />
+    icons: <BiHotel fontSize={25} />,
+    menu: "All Ratings",
+    submenus: [1, 2, 3, 4, 5]
   },
   {
     name: "Attractions",
-    icons: <BiMapAlt />
+    icons: <BiMapAlt />,
+    menu: "All Ratings",
+    submenus: [1, 2, 3, 4, 5]
   }
 ];

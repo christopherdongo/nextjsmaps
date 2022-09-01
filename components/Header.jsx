@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   Flex,
   InputGroup,
@@ -10,13 +10,25 @@ import {
   MenuItem,
   Text
 } from "@chakra-ui/react";
-import {Card} from './MapsCard/Card'
-import { Autocomplete } from "@react-google-maps/api";
-import { BiChevronDown, BiHotel, BiMap, BiMapAlt, BiRestaurant, BiSearch, BiStar } from "react-icons/bi";
+import { Autocomplete } from '@react-google-maps/api';
+import { BiChevronDown, BiHotel, BiMapAlt, BiRestaurant, BiSearch, BiStar } from "react-icons/bi";
 import { Rating } from "@material-ui/lab";
-import {data} from '../jdata/data'
 
-export const Header = ({ type, setType, ratings, setRatings }) => {
+
+export const Header = ({ type, setType, ratings,addrating, setRatings, setCoordinates }) => {
+
+  const [autocomplete, setAutocomplete] = useState(null);
+
+  const onLoad=(autoC)=>setAutocomplete(autoC);
+
+  const onPlaceChanged = ()=>{
+    const lat = autocomplete.getPlace().geometry.location.lat();
+    const lng =  autocomplete.getPlace().geometry.location.lng();
+    setCoordinates( old => {
+      return {lat, lng}
+    })
+  }
+
   return (
     <Flex
       position={"absolute"}
@@ -30,6 +42,10 @@ export const Header = ({ type, setType, ratings, setRatings }) => {
       alignItems={'center'}
     >
       <Flex>
+        <Autocomplete 
+        onLoad={onLoad}
+        onPlaceChanged={onPlaceChanged}
+        >
         <InputGroup width={"35vw"} shadow="lg">
           <InputRightElement
             pointerEvents={"none"}
@@ -48,6 +64,7 @@ export const Header = ({ type, setType, ratings, setRatings }) => {
             _placeholder={{ color: "gray.700" }}
           />
         </InputGroup>
+        </Autocomplete>
 
         <Flex alignItems={"center"} justifyContent={"center"}>
           <Flex
@@ -70,62 +87,33 @@ export const Header = ({ type, setType, ratings, setRatings }) => {
                 Choose ratings
               </MenuButton>
               <MenuList>
-                <MenuItem
+              <MenuItem
                   display={"flex"}
                   alignItems={"center"}
                   justifyContent={"center"}
-                  onClick={() => setRatings((old) => "1.0")}
-                >
-                  <Text fontSize={20} fontWeight={500} color={"gray.700"}>
-                    All Ratings
-                  </Text>
-                </MenuItem>
-
-                <MenuItem
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  onClick={() => setRatings((old) => '2.0')}
+                  onClick={() => setRatings((old) => '')}
                 >
                   <Text fontSize={20} fontWeight={500} color={"orange.500"}>
-                    2.0
-                  </Text>
-                  <Rating size="small" value={2} readOnly />
-                </MenuItem>
-
-                <MenuItem
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  onClick={() => setRatings((old) => '3.0')}
-                >
-                  <Text fontSize={20} fontWeight={500} color={"orange.500"}>
-                    3.0
-                  </Text>
-                  <Rating size="small" value={3} readOnly />
-                </MenuItem>
-                <MenuItem
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  onClick={() => setRatings((old) => '4.0')}
-                >
-                  <Text fontSize={20} fontWeight={500} color={"orange.500"}>
-                    4.0
-                  </Text>
-                  <Rating size="small" value={4} readOnly />
-                </MenuItem>
-                <MenuItem
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  onClick={() => setRatings((old) => '5.0')}
-                >
-                  <Text fontSize={20} fontWeight={500} color={"orange.500"}>
-                    5.0
+                    all Ratings
                   </Text>
                   <Rating size="small" value={5} readOnly />
                 </MenuItem>
+               {
+                 addrating.map((item, index) => (
+                  <MenuItem
+                  key={index}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  onClick={() => setRatings((old) => item)}
+                >
+                  <Text fontSize={20} fontWeight={500} color={"orange.500"}>
+                    {item}
+                  </Text>
+                  <Rating size="small" value={Number(item)} readOnly />
+                </MenuItem>
+                 ))
+               }
               </MenuList>
               <BiChevronDown fontSize={25} />
             </Menu>

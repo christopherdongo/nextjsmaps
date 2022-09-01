@@ -1,17 +1,18 @@
 
 import {
-  Flex,
-  InputGroup,
-  InputRightElement,
-  Input,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   Text
 } from "@chakra-ui/react";
-import { BiChevronDown, BiHotel, BiMap, BiMapAlt, BiRestaurant, BiSearch, BiStar } from "react-icons/bi";
+import { BiChevronDown, BiStar } from "react-icons/bi";
+import { Rating } from "@material-ui/lab";
+import UsehookMaps from '../../hooks/UsehookMaps.js'
 export const Listitem = () => {
+
+  const {setRatings} = UsehookMaps();
+
   return (
     <Menu>
     <BiStar fontSize={25} />

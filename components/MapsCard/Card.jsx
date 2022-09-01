@@ -4,9 +4,12 @@ import {
     Text
   } from "@chakra-ui/react";
   import { BiChevronDown, BiHotel, BiMap, BiMapAlt, BiRestaurant, BiSearch, BiStar } from "react-icons/bi";
-
+  import UsehookMaps from '../../hooks/UsehookMaps.js'
 
 export const Card = ({name, icons}) => {
+
+  const { setType } = UsehookMaps();
+
   return (
     <Flex
     alignItems={"center"}
